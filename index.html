@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./styles.css">
+    
 </head>
 <body>
 <div class="page-wrapper">
@@ -18,9 +20,9 @@
 
             <div class="searchbox">
 
-                <input type="text" name="" id="">
+                <input class="inputbox" type="text" name="" id="filterbox" placeholder="Type to filter..">
 
-                <div><i></i></div>
+                <div style="display: inline; padding: 5px;"><i class="fa fa-search" style="color: lightgray;" aria-hidden="true"></i></div>
 
             </div>
 
@@ -28,23 +30,36 @@
         
     </nav>
 
-    <div class="body-wrapper">
+    <div class="body-wrapper" id="containerbody">
 
-        <div class="latest-news">Latest News</div>
+        <div class="news-section">
 
-        <div class="row">
+            <div class="latest-news-head">Featured News</div>
 
-            <div class="col-md-4">
-                
-            </div>
+            <div class="row latestnews"></div>
+
         </div>
+
+        <div class="news-section">
+
+            <div class="latest-news-head">Latest News</div>
+
+            <div class="row featurednews"></div>
+
+        </div>
+        
     </div>
+
 </div>
+
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script src="./customScripts.js"></script>
+
 </body>
 </html>

@@ -14,21 +14,26 @@
 
     <nav class="top-nav">
 
-        <div class="nav-section">
-            
-            <div class="nav-head">McFadyen Digital</div>
 
-            <div class="searchbox">
+            <div class="nav-section">
+                
+                <div class="nav-head">McFadyen Digital</div>
 
-                <input class="inputbox" type="text" name="" id="filterbox" placeholder="Type to filter..">
+                <div class="searchbox">
 
-                <div style="display: inline; padding: 5px;"><i class="fa fa-search" style="color: lightgray;" aria-hidden="true"></i></div>
+                    <input class="inputbox" type="text" name="" id="filterbox" placeholder="Type to filter.." onkeyup="searchfunc()">
+
+                    <div style="display: inline; padding: 5px;"><i class="fa fa-search" style="color: lightgray;" aria-hidden="true"></i></div>
+                
+                </div>
 
             </div>
-
-        </div>
-        
+    
     </nav>
+
+    <ul class="ul-styles" id="customList">
+
+      </ul>
 
     <div class="body-wrapper" id="containerbody">
 
@@ -36,7 +41,7 @@
 
             <div class="latest-news-head">Featured News</div>
 
-            <div class="row latestnews"></div>
+            <div id="featurednewsdiv" class="row featurednews"></div>
 
         </div>
 
@@ -44,7 +49,7 @@
 
             <div class="latest-news-head">Latest News</div>
 
-            <div class="row featurednews"></div>
+            <div id="latestnewsdiv" class="row latestnews"></div>
 
         </div>
         

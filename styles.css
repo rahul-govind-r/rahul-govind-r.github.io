@@ -107,3 +107,43 @@ body
 {
     font-size: 18px;
 }
+.ul-styles
+{
+    list-style: none;
+    background-color: lightgray;
+    width: 16.5%;
+    position: absolute;
+    right: 50px;
+    z-index: 100;
+    border-radius: 0px 0px 10px 10px;
+    padding-left: 0px;
+    
+}
+.ul-styles li
+{
+    padding: 5px;
+}
+.ul-styles li a
+{
+    color: black !important;
+    font-size: 18px;
+    text-decoration: none;
+    opacity: 0.8;
+}
+.ul-styles li a:hover
+{
+    opacity: 1;
+}
+
+@keyframes highlight {
+    0% {
+        background: #ffff99; 
+    }
+    100% {
+        background: none;
+    }
+}
+
+.highlight {
+    animation: highlight 2s;
+}

@@ -1,138 +1,127 @@
-/* FUNCTION TO HIGHLIGHT THE SEARCHED ITEM */
 
-function highlight(elem)
-{
-    inputbox = document.getElementById("filterbox");
-    inputbox.value = '';    
-    list_val = div.getElementsByTagName("li");
-    for (i = 0; i < list_val.length; i++) 
+const wazirxApi = async () => {
+    const response = await fetch('https://cors-anywhere.herokuapp.com/https://api.wazirx.com/api/v2/tickers')
+    const myJson = await response.json(); //extract JSON from the http response
+    // do something with myJson
+     const market = Object.values(myJson)
+     const usdtMarket = []
+    for ( i=0; i < market.length ; i++) 
     {
-        list_val[i].style.display = "none";
-    }
-    var list_id = elem.hash
-    var card_id =list_id.substring(1);
-    var element = document.getElementById(card_id);
-    card_tile = element.getElementsByClassName("card")
-    card_tile[0].classList.add("highlight");
- setTimeout(function () {
-    card_tile[0].classList.remove("highlight");
- }, 2000);
-
-}
-
-/* FUNCTION TO HIGHLIGHT THE SEARCHED ITEM ENDS */
-
-
-/* FUNCTION TO FACILITATE THE SEARRCH */
-function searchfunc() 
-{
-    var input, filter, ul, li, a, i;
-    input = document.getElementById("filterbox");
-    filter = input.value.toUpperCase();
-    div = document.getElementById("customList");
-    li = div.getElementsByTagName("li");
-    if ( input.value.length > 2 )
-    {
-         
-        for (i = 0; i < li.length; i++) {
-          txtValue = li[i].textContent || li[i].innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "block";
-          } else {
-            li[i].style.display = "none";
-          }
-        }
-    }
-    else
-    {
-      for (i = 0; i < li.length; i++) 
+      if ( market[i].quote_unit == "usdt" )
       {
-          li[i].style.display = "none";
+          usdtMarket.push(market[i])
       }
+    }
+
+    return usdtMarket
+    
+}
+async function priceArray () {
+    usdtMarket = await wazirxApi()
+    var objct = {}
+    const keys = []
+    const values = []
+    for(var i = 0; i < usdtMarket.length; i++)
+    {  
+        keys.push(usdtMarket[i].name)
+        values.push(usdtMarket[i].last)
     } 
-  }
 
-  /* FUNCTION TO FACILITATE THE SEARRCH ENDS */
+    var array = {}
+    for(var i = 0; i < usdtMarket.length; i++){ 
+        array[keys[i]] = values[i]; 
+    } 
 
-/* SCRIPT TO FETCH PUBLIC API DETAILS FROM NEW YORK TIMES */
-
-window.onload = function ()  {
-
-var request = new XMLHttpRequest()
-var newshtml = '';
-
-request.open('GET', 'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=XUvGy7DyFaEmY5Q2v0PnGvsdK09c88dG', true)
-
-request.onload = function () {
-
-    var featureddata = JSON.parse(this.response)
-    var featurednewsdata = featureddata.response.docs;
-    for ( i=0; i< featurednewsdata.length; i++ )
-    {
-        if (i < 3)
-        {
-            newshtml += '<div class="col-md-4 card-styles"> ' +
-            '<div class="card latestnewscard">' +
-                '<div class="card-img-top" style=background-image:url("https://www.nytimes.com/'+ featurednewsdata[i].multimedia[0].url +'")></div>' +
-                '<div class="card-body">' +
-                '<h5 class="card-title">' + featurednewsdata[i].subsection_name + '</h5>' +
-                '<p class="card-text">' +featurednewsdata[i].abstract+ '</p>' +
-                '</div>' +
-            '</div>' +
-            '</div>' ;
-        }
-    }
-    var featured_news = document.getElementById("featurednewsdiv");
-    featured_news.innerHTML = newshtml;
+    return array
 }
 
-request.send()
+const timer = ms => new Promise(res => setTimeout(res, ms))
+bigArray = []
+async function load () { // We need to wrap the loop into an async function for this to work
+    priceObj = await wazirxApi()
+    subArray = []
+    for (var obj = 0; obj >= 0 ; obj++) {
+        // bigArray[obj] = await priceArray()
+        subArray = await priceArray()
+        bigArray.push(subArray)
+        await timer(30000); // then the created Promise can be awaited
+    }
+    return bigArray
+}
 
-var request1 = new XMLHttpRequest()
-var featurednewshtml = '';
-var listitems = '';
+load()
 
-request1.open('GET', 'https://api.nytimes.com/svc/mostpopular/v2/emailed/7.json?&api-key=XUvGy7DyFaEmY5Q2v0PnGvsdK09c88dG', true)
+function infiniteLoop () {
 
-request1.onload = function () {
-  
-    var data = JSON.parse(this.response)
-    var latestnewsdata = data.results
-    for ( i=0; i< latestnewsdata.length; i++ )
-    {
-        if (i < 9)
-        {
-            featurednewshtml += '<div class="col-md-4 card-styles" id="cardnumber' + latestnewsdata[i].id + '"> ' +
-            '<div class="card featurednewscard">' +
-                '<div class="card-body">' +
-                '<h5 class="card-title" style="margin-bottom:10px;">' + latestnewsdata[i].title + '</h5>' +
-                '<p class="card-text">' +latestnewsdata[i].abstract + '</p>' +
-                '</div>' +
-            '</div>' +
-            '</div>' ;
-        
-            /* THE BELOW FOR LOOP DYNAMICALLY FETCHES DATA FROM THE API AND ADDS TO DROPDOWN OF SEARCH BOX AND 
-            UPON CLICK OF THE RESULT IT JUMPS TO THE PARTICULAR NEWS CARD AND HIGHLIGHTS IT */
-
-            for ( k=0; k < latestnewsdata[i].des_facet.length ; k++ )
+    presentObj = bigArray.length - 1
+    previousObj = presentObj - 1
+    tenMinObj = presentObj -20 
+    initialObj = 0
+    thirtySecond = ''
+    initialChange = ''
+            for ( let [key,value ] of Object.entries(bigArray[presentObj]))
             {
-                if ( !( listitems.includes( latestnewsdata[i].des_facet[k]) ) )
-                {
-                    listitems += '<li style="display:none"><a onclick="highlight(this)" href="#cardnumber'+ latestnewsdata[i].id +'">' + latestnewsdata[i].des_facet[k] + '</a></li>';
 
-                }
+                    var index = Object.keys(bigArray[presentObj]).indexOf(key);
+                    previousPrice = Object.entries(bigArray[previousObj])[index][1]
+                    price = Object.entries(bigArray[presentObj])[index][1]
+                    // tenMinPrice = Object.entries(bigArray[tenMinObj])[index][1]
+                    initialPrice = Object.entries(bigArray[initialObj])[index][1]
+                    percentageChangeSeconds = ( (price-previousPrice) / previousPrice ) * 100
+                    percentageChangeInitial = ( (price-initialPrice) / initialPrice ) * 100
+                    if ( percentageChangeSeconds > 1)
+                    {
+                        secondsElement =    '<div class="row coinWrapper" style="background-color: lavender;" data-percentage="' + percentageChangeSeconds + '">' +
+                                            '<div class="col-md-6">' + key +'</div>' + 
+                                            '<div class="col-md-6">' + percentageChangeSeconds + '%</div>' +
+                                            '</div>'
+                        thirtySecond = thirtySecond + secondsElement
+                        $("#30secWindow").append(thirtySecond)
+                        var $wrapper = $('.secondsWindow');
+                        $wrapper.find('.coinWrapper').sort(function(a, b) {
+                            return +b.dataset.percentage - +a.dataset.percentage;
+                        })
+                        .appendTo($wrapper);
+                    }
+
+                    if ( percentageChangeInitial > 2 )
+                    {
+                        initialElement =    '<div class="row coinWrapper" style="background-color: lavender;" data-percentage="' + percentageChangeInitial + '">' +
+                                            '<div class="col-md-6">' + key +'</div>' + 
+                                            '<div class="col-md-6">' + percentageChangeInitial + '%</div>' +
+                                            '</div>'
+                        initialChange = initialChange + secondsElement
+                        $("#startWindow").append(initialChange)
+                        $("#10minWindow").append(initialChange)
+                        var $wrapper = $('.initialPrice');
+                        $wrapper.find('.coinWrapper').sort(function(a, b) {
+                            return +b.dataset.percentage - +a.dataset.percentage;
+                        })
+                        .appendTo($wrapper);
+                        var $wrapper1 = $('.initialPrice');
+                        $wrapper1.find('.coinWrapper').sort(function(a, b) {
+                            return +b.dataset.percentage - +a.dataset.percentage;
+                        })
+                        .appendTo($wrapper1);
+                    }
+                    
             }
-        }
+            if ( $("#30secWindow .coinWrapper").length > 32 ) { $("#30secWindow").children().not(':first').remove(); thirtySecond = '' }
+            if ( $("#10minWindow .coinWrapper").length > 32 ) { $("#10minWindow").children().not(':first').remove(); thirtySecond = '' }
+            if ( $("#startWindow .coinWrapper").length > 32 ) { $("#startWindow").children().not(':first').remove(); thirtySecond = '' }
+
+}
+
+function loopFunction(delay, callback){
+    var loop = function(){
+        callback();
+        setTimeout(loop, delay);
+    }; loop();
+};
+
+loopFunction(35000, function(){
+    if (bigArray.length > 1 ) 
+    {
+    infiniteLoop()
     }
-    var latest_news = document.getElementById("latestnewsdiv");
-    latest_news.innerHTML = featurednewshtml;
-
-    var search_items = document.getElementById("customList");
-    search_items.innerHTML = listitems;
-}
-
-request1.send()
-
-}
-
-/* SCRIPT TO FETCH PUBLIC API DETAILS FROM NEW YORK TIMES ENDS */
+});

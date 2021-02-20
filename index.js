@@ -49,26 +49,25 @@ async function load () { // We need to wrap the loop into an async function for 
     return bigArray
 }
 
+const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+
 load()
 
-function infiniteLoop () {
+keyArray = []
+
+function infiniteLoopSeconds () {
 
     presentObj = bigArray.length - 1
     previousObj = presentObj - 1
-    tenMinObj = presentObj -20 
-    initialObj = 0
     thirtySecond = ''
-    initialChange = ''
+
             for ( let [key,value ] of Object.entries(bigArray[presentObj]))
             {
 
                     var index = Object.keys(bigArray[presentObj]).indexOf(key);
                     previousPrice = Object.entries(bigArray[previousObj])[index][1]
                     price = Object.entries(bigArray[presentObj])[index][1]
-                    // tenMinPrice = Object.entries(bigArray[tenMinObj])[index][1]
-                    initialPrice = Object.entries(bigArray[initialObj])[index][1]
                     percentageChangeSeconds = ( (price-previousPrice) / previousPrice ) * 100
-                    percentageChangeInitial = ( (price-initialPrice) / initialPrice ) * 100
                     if ( percentageChangeSeconds > 1)
                     {
                         secondsElement =    '<div class="row coinWrapper" style="background-color: lavender;" data-percentage="' + percentageChangeSeconds + '">' +
@@ -76,40 +75,84 @@ function infiniteLoop () {
                                             '<div class="col-md-6">' + percentageChangeSeconds + '%</div>' +
                                             '</div>'
                         thirtySecond = thirtySecond + secondsElement
-                        $("#30secWindow").append(thirtySecond)
-                        var $wrapper = $('.secondsWindow');
-                        $wrapper.find('.coinWrapper').sort(function(a, b) {
-                            return +b.dataset.percentage - +a.dataset.percentage;
-                        })
-                        .appendTo($wrapper);
+                        keyArray.push(key)
+                        // var $wrapper = $('.secondsWindow');
+                        // $wrapper.find('.coinWrapper').sort(function(a, b) {
+                        //     return +b.dataset.percentage - +a.dataset.percentage;
+                        // })
+                        // .appendTo($wrapper);
+                        if (countOccurrences(keyArray, key) > 2) { alert(key + ' is Active ') }
                     }
 
+ 
+                    
+            }
+            document.getElementById("30secWindow").innerHTML += thirtySecond
+            if ( $("#30secWindow .coinWrapper").length > 32 ) { $("#30secWindow").children().not(':first').remove(); thirtySecond = '' }
+}
+
+function infiniteLoopInitial () {
+
+    presentObj = bigArray.length - 1
+    initialObj = 0
+    initialChange = ''
+            for ( let [key,value ] of Object.entries(bigArray[presentObj]))
+            {
+
+                    var index = Object.keys(bigArray[presentObj]).indexOf(key);
+                    price = Object.entries(bigArray[presentObj])[index][1]
+                    initialPrice = Object.entries(bigArray[initialObj])[index][1]
+                    percentageChangeInitial = ( (price-initialPrice) / initialPrice ) * 100
                     if ( percentageChangeInitial > 2 )
                     {
                         initialElement =    '<div class="row coinWrapper" style="background-color: lavender;" data-percentage="' + percentageChangeInitial + '">' +
                                             '<div class="col-md-6">' + key +'</div>' + 
                                             '<div class="col-md-6">' + percentageChangeInitial + '%</div>' +
                                             '</div>'
-                        initialChange = initialChange + secondsElement
-                        $("#startWindow").append(initialChange)
-                        $("#10minWindow").append(initialChange)
-                        var $wrapper = $('.initialPrice');
-                        $wrapper.find('.coinWrapper').sort(function(a, b) {
-                            return +b.dataset.percentage - +a.dataset.percentage;
-                        })
-                        .appendTo($wrapper);
-                        var $wrapper1 = $('.initialPrice');
-                        $wrapper1.find('.coinWrapper').sort(function(a, b) {
-                            return +b.dataset.percentage - +a.dataset.percentage;
-                        })
-                        .appendTo($wrapper1);
+                        initialChange = initialChange + initialElement
                     }
                     
             }
-            if ( $("#30secWindow .coinWrapper").length > 32 ) { $("#30secWindow").children().not(':first').remove(); thirtySecond = '' }
-            if ( $("#10minWindow .coinWrapper").length > 32 ) { $("#10minWindow").children().not(':first').remove(); thirtySecond = '' }
-            if ( $("#startWindow .coinWrapper").length > 32 ) { $("#startWindow").children().not(':first').remove(); thirtySecond = '' }
+            $("#startWindow").append(initialChange)
+            var $wrapper = $('.initialPrice');
+            $wrapper.find('.coinWrapper').sort(function(a, b) {
+                return +b.dataset.percentage - +a.dataset.percentage;
+            })
+            .appendTo($wrapper);
+            if ( $("#startWindow .coinWrapper").length > 32 ) { $("#startWindow").children().not(':first').remove(); initialChange = '' }
 
+}
+
+function infiniteLoopMinutes () {
+
+    presentObj = bigArray.length - 1
+    tenMinObj = presentObj - 20 
+    tenMinute = ''
+            for ( let [key,value ] of Object.entries(bigArray[presentObj]))
+            {
+
+                    var index = Object.keys(bigArray[presentObj]).indexOf(key);
+                    price = Object.entries(bigArray[presentObj])[index][1]
+                    tenMinPrice = Object.entries(bigArray[tenMinObj])[index][1]
+                    percentageChangeMinutes = ( (price-tenMinPrice) / tenMinPrice ) * 100
+
+                    if ( percentageChangeMinutes > 2 )
+                    {
+                        minElement =    '<div class="row coinWrapper" style="background-color: lavender;" data-percentage="' + percentageChangeMinutes + '">' +
+                                            '<div class="col-md-6">' + key +'</div>' + 
+                                            '<div class="col-md-6">' + percentageChangeMinutes + '%</div>' +
+                                            '</div>'
+                        tenMinute = tenMinute + minElement
+                    }
+                    
+            }
+            $("#10minWindow").append(tenMinute)
+            var $wrapper = $('.minWrapper');
+            $wrapper.find('.coinWrapper').sort(function(a, b) {
+                return +b.dataset.percentage - +a.dataset.percentage;
+            })
+            .appendTo($wrapper);
+            if ( $("#10minWindow .coinWrapper").length > 32 ) { $("#10minWindow").children().not(':first').remove(); tenMinute = '' }
 }
 
 function loopFunction(delay, callback){
@@ -120,8 +163,13 @@ function loopFunction(delay, callback){
 };
 
 loopFunction(35000, function(){
-    if (bigArray.length > 1 ) 
+    if ( bigArray.length > 1 ) 
     {
-    infiniteLoop()
+        infiniteLoopSeconds()
+        infiniteLoopInitial()
+    }
+    if ( bigArray.length > 20 )
+    {
+        infiniteLoopMinutes()
     }
 });

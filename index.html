@@ -3,69 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./index.js"></script>
+    <title>Price calculator</title>
     
 </head>
+
 <body>
-<div class="page-wrapper">
 
-    <nav class="top-nav">
+<div id="container">
 
+    <div id = "header" style="font-size: 50px; text-align: center; color: blue; background-color: whitesmoke; padding: 20px;">Wazirx price change calculator </div>
+    
+    <div >
 
-            <div class="nav-section">
+        <div id='30secWindow' class="col-md-4 secondsWindow">
+            
+            <div class="row" style="background-color: skyblue;">
+
+                <div class="col-md-12" style="font-size: 30px; font-weight: bold; text-align: center; padding: 5px; background-color: tan;">Change of rate in 30 seconds </div>
                 
-                <div class="nav-head">McFadyen Digital</div>
+                <div class="col-md-6" style="font-size: 20px; font-weight: bold; padding: 5px;">Coin Name</div>
 
-                <div class="searchbox">
-
-                    <input class="inputbox" type="text" name="" id="filterbox" placeholder="Type to filter.." onkeyup="searchfunc()">
-
-                    <div style="display: inline; padding: 5px;"><i class="fa fa-search" style="color: lightgray;" aria-hidden="true"></i></div>
-                
-                </div>
+                <div class="col-md-6" style="font-size: 20px; font-weight: bold; padding: 5px;">Price Change percentage</div>
 
             </div>
-    
-    </nav>
-
-    <ul class="ul-styles" id="customList">
-
-      </ul>
-
-    <div class="body-wrapper" id="containerbody">
-
-        <div class="news-section">
-
-            <div class="latest-news-head">Featured News</div>
-
-            <div id="featurednewsdiv" class="row featurednews"></div>
 
         </div>
 
-        <div class="news-section">
-
-            <div class="latest-news-head">Latest News</div>
-
-            <div id="latestnewsdiv" class="row latestnews"></div>
-
-        </div>
+        <div id="10minWindow" class="col-md-4" style="border-left: 4px solid white; border-right: 4px solid white;">
         
+            <div class="row" style="background-color: skyblue;">
+
+                <div class="col-md-12" style="font-size: 30px; font-weight: bold; text-align: center; padding: 5px; background-color: tan;">Change of rate in 10 mins</div>
+                
+                <div class="col-md-6" style="font-size: 20px; font-weight: bold; padding: 5px;">Coin Name</div>
+
+                <div class="col-md-6" style="font-size: 20px; font-weight: bold; padding: 5px;">Price Change percentage</div>
+
+            </div>
+
+        </div>
+
+        <div id="startWindow" class="col-md-4 .initialPrice">
+
+            <div class="row" style="background-color: skyblue;">
+
+                <div class="col-md-12" style="font-size: 30px; font-weight: bold; text-align: center; padding: 5px; background-color: tan;">Change of rate since start </div>
+                
+                <div class="col-md-6" style="font-size: 20px; font-weight: bold; padding: 5px;">Coin Name</div>
+
+                <div class="col-md-6" style="font-size: 20px; font-weight: bold; padding: 5px;">Price Change percentage</div>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>
 
-
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-<script src="./customScripts.js"></script>
-
-<script src="https://connect.facebook.net/en_US/all.js"></script>
 </body>
+
 </html>
+
+
+
+<style>
+    .coinWrapper 
+    {
+        padding-top: 5px;
+    }
+</style>

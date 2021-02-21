@@ -1,6 +1,6 @@
 
 const wazirxApi = async () => {
-    const response = await fetch('https://cors-anywhere.herokuapp.com/https://api.wazirx.com/api/v2/tickers')
+    const response = await fetch('https://rahulgr-alertsys.herokuapp.com/https://api.wazirx.com/api/v2/tickers')
     const myJson = await response.json(); //extract JSON from the http response
     // do something with myJson
      const market = Object.values(myJson)
